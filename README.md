@@ -18,7 +18,7 @@ The working directory of the server will be the directory from which it was laun
 
 To <b>access</b> files from the working directory simply refer them in the path of the URL (e.g http://localhost/somefile.txt will try to download somefile.txt from the directory the JVM was launched).
 
-To <b>upload</b> files is a bit more complicated, you would need a client. Simply attach them to the request and set the proper Content-Type. An example to upload file <b>'upload.jpg'</b> would be this:
+To <b>upload</b> files is a bit more complicated, you would need a <a href="http://hc.apache.org/httpclient-3.x/">client</a>. Simply attach them to the request and set the proper Content-Type. An example to upload file <b>'upload.jpg'</b> would be this:
 ```java
 	private HttpResponse submitUploadBinary() throws ClientProtocolException, IOException {
 		HttpClient httpclient = HttpClients.createDefault();
