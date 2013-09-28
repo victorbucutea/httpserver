@@ -10,9 +10,9 @@ import com.adobe.server.http.HttpResponseOutputStream;
 import com.adobe.server.http.HttpStreamHandler;
 
 /**
- * Main class responsible for listening on sockets and delegating requests to
- * processing Threads
- * 
+ * Main class responsible for listening on sockets and delegating to processing
+ * threads. The processing Threads are managed by a {@link ThreadManager} and
+ * the request stream is processed by a {@link HttpStreamHandler}.
  * 
  * @author VictorBucutea
  * 
@@ -20,6 +20,7 @@ import com.adobe.server.http.HttpStreamHandler;
 public class Server {
 
 	private int port;
+	private boolean keepAliveSupport;
 	private ThreadManager manager = new ThreadManager();
 	private ServerSocket ss;
 	private Logger logger = new Logger();
@@ -27,6 +28,11 @@ public class Server {
 
 	public Server(int port) {
 		this.port = port;
+	}
+	
+	public Server(int port, boolean keepAliveSupport){
+		this.port = port;
+		this.keepAliveSupport = keepAliveSupport;
 	}
 
 	public void start() {
@@ -107,7 +113,7 @@ public class Server {
 					try {
 						HttpRequestInputStream inputStream = new HttpRequestInputStream(s.getInputStream());
 						HttpResponseOutputStream outputStream = new HttpResponseOutputStream(s.getOutputStream());
-						new HttpStreamHandler().handle(inputStream, outputStream);
+						new HttpStreamHandler(keepAliveSupport).handle(inputStream, outputStream);
 					} catch (IOException e) {
 						logger.error(e);
 					}

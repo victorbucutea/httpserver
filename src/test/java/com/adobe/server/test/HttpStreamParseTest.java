@@ -3,16 +3,12 @@ package com.adobe.server.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.adobe.server.IOUtil;
 import com.adobe.server.http.HttpRequest;
 import com.adobe.server.http.HttpRequestInputStream;
 
@@ -44,19 +40,6 @@ public class HttpStreamParseTest {
 	//@f_on
 	ByteArrayInputStream stream = new ByteArrayInputStream(header.getBytes());
 
-	@Test
-	public void parseTest() throws IOException {
-		List<String> readLines = IOUtil.readHeaderLines(new BufferedReader(new InputStreamReader(stream)));
-
-		assertEquals(6, readLines.size());
-		assertEquals("GET /rfc/rfc3261.txt HTTP/1.1", readLines.get(0));
-		assertEquals("Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", readLines.get(1));
-		assertEquals("accept-Encoding:gzip,deflate,sdch", readLines.get(2));
-		assertEquals("Connection:keep-alive", readLines.get(3));
-		assertEquals("Host:www.ietf.org", readLines.get(4));
-		assertEquals("User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.76 Safari/537.36",
-				readLines.get(5));
-	}
 	
 	@Test
 	public void parseHeaderTest2() throws IOException {

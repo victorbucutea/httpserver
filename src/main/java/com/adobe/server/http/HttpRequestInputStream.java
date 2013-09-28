@@ -9,12 +9,6 @@ import com.adobe.server.IOUtil;
 
 public class HttpRequestInputStream extends DataInputStream {
 
-	/**
-	 * Protocol specific header encoding. This is not the charset for content
-	 * encoding as that is specified in Content-Type headers
-	 */
-	public static final String HEADER_ENCODING = "UTF-8";
-
 	HttpRequest request = new HttpRequest();
 
 	public HttpRequestInputStream(InputStream in) {

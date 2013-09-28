@@ -12,11 +12,13 @@ public class PrintHandler implements HttpHandler {
 		System.out.println("Processing Thread :" + Thread.currentThread());
 		System.out.println("Keep alive:" + request.isKeepConnectionAlive());
 		System.out.print("Content :");
-		if (request.hasContent())
+		if (request.hasContent()) {
 			if ("text/plain".equals(request.getContentType())) {
 				System.out.println(new String(request.getContent()));
-			} else
-				System.out.println("None.");
+			}
+		} else {
+			System.out.println("None.");
+		}
 
 	}
 }

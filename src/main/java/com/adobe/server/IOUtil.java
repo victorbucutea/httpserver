@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -69,36 +68,6 @@ public class IOUtil {
 		return output.toByteArray();
 	}
 
-	public static String readLine(InputStream input, String encoding) throws IOException {
-		InputStreamReader reader = new InputStreamReader(input, encoding);
-		return readLine(reader);
-	}
-
-	public static String readLine(Reader input) throws IOException {
-		BufferedReader reader = new BufferedReader(input);
-		String line = reader.readLine();
-		return line;
-	}
-
-	public static LinkedList<String> readHeaderLines(BufferedReader reader) throws IOException {
-		LinkedList<String> list = new LinkedList<String>();
-		String line = reader.readLine();
-		// if an empty row is found, we skip reading
-		// Http 1.1 can have 0 or more headers.
-		// the headers area is separated by an empty line from the content.
-		while (line != null && !line.isEmpty()) {
-			list.add(line);
-			line = reader.readLine();
-		}
-		return list;
-	}
-
-	public static void printStream(InputStream instream) throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(instream));
-		String inputLine;
-		while ((inputLine = in.readLine()) != null)
-			System.out.println(inputLine);
-	}
 
 	public static String toString(InputStream instream) throws IOException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(instream));
@@ -145,10 +114,9 @@ public class IOUtil {
 		while ((input = in.read()) != -1) {
 			byte inputByte = (byte) input;
 			buffer.write(inputByte);
-
 			last4Chars.put(inputByte);
-			if (emptyLine(last4Chars)) {
 			
+			if (emptyLine(last4Chars)) {
 				break;
 			}
 

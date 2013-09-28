@@ -63,8 +63,7 @@ public class ServerTest {
 	public void stopWhileProcessingIsBlocked() throws ClientProtocolException, IOException {
 		/*
 		 * we synchronize on File manager, this way we make sure the
-		 * executor Thread will wait for us to release the lock, which will
-		 * never happen btw ;)
+		 * executor Thread will wait for us to release the lock.
 		 */
 
 		FileManager fm = FileManager.getInstance();
@@ -81,11 +80,7 @@ public class ServerTest {
 				}
 			}).start();
 			
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			
 			server.stop();
 		}
 	}

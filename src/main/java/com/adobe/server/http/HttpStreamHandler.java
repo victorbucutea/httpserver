@@ -12,31 +12,42 @@ import com.adobe.server.http.handlers.HttpHandler;
 public class HttpStreamHandler implements StreamHandler {
 
 	private List<HttpHandler> handlers = new ArrayList<HttpHandler>();
-	
-	public HttpStreamHandler() {
+	private boolean keepAliveSupport;
+
+	public HttpStreamHandler(boolean keepAliveSupport) {
+		this.keepAliveSupport = keepAliveSupport;
+		/*
+		 * register handlers for .. well .. handling requests/responses
+		 */
 		handlers.add(new FileDownloadHandler());
 		handlers.add(new FileUploadHandler());
 	}
-	
+
 	@Override
 	public void handle(HttpRequestInputStream inStream, HttpResponseOutputStream outStream) throws IOException {
 
 		HttpRequest request = HttpRequestInputStream.createRequest(inStream);
-		HttpResponse response = HttpResponseOutputStream.createResponse(inStream,outStream);
+		HttpResponse response = HttpResponseOutputStream.createResponse(inStream, outStream);
 
-		for (HttpHandler handler: handlers ){
+		for (HttpHandler handler : handlers) {
 			handler.handle(request, response);
 		}
-		
-		
-		if (!request.isKeepConnectionAlive()) {
-			response.addCloseConnection();
-		} else {
+
+	
+		if (keepAliveSupport && request.isKeepConnectionAlive()) {
 			response.addKeepConnectionAliveHeader();
+		} else {
+			response.addCloseConnection();
 		}
-		
+
+
 		response.flush();
-		outStream.close();
+		
+		if (keepAliveSupport && request.isKeepConnectionAlive()){
+			handle(inStream, outStream);
+		} else {
+			outStream.close();
+		}
 	}
 
 }
