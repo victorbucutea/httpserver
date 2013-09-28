@@ -8,7 +8,7 @@ To start the server simply build via <b>mvn clean install</b> and then just run 
 
 The start command syntax is: 
 			
-			<b> java.exe -jar target/http.server-1.0.jar </b> [port] ['keep-alive']
+			java.exe -jar target/http.server-1.0.jar [port] ['keep-alive']
 
 			* [port]         is ... well ... the port on which the server will start
 			* ['keep-alive'] is the http keep-alive option in Http 1.1 . Please consider
@@ -17,9 +17,16 @@ The start command syntax is:
 							 
 The architecture of the server is simple:
 
- *  Server        --> Will create the socket listener thread and it will delegate processing to a HttpStreamHandler
-                      via a ThreadManager
- *  ThreadManager
+ *  Server        	    --> Will create the socket listener thread and it will delegate processing to a HttpStreamHandler
+                          via a ThreadManager
+ *  ThreadManager 	    --> Handles Thread pool management, increase decrease number of threads, thread saturation limits - After 
+					      how many concurrent executing jobs we can say that it's too much.
+ *  HttpStreamHandler   --> Will create the HttpRequest from the HttpRequestInputStream and the HttpResponse object and it will 
+                          delegate processing to 'handlers'
+ *  HttpDownloadHandler --> HttpHandler responsible for streaming files into the HttpResponse
+ *  HttpUploadHandler   --> HttpHandler responseible for writing files read from the HttpRequest content
+ *  FileManager         --> read/write files, decide to keep file buffer (cache) or stream directly from disk., Manage streams and 
+							resources ( locking , proper stream closing, etc. )
 
 
 
