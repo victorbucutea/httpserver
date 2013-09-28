@@ -16,9 +16,10 @@ The start command syntax is:
 
 The working directory of the server will be the directory from which it was launched. 
 
-To access files from the working directory simply refer them in the path of the URL (e.g http://localhost/somefile.txt will try to download somefile.txt from the directory the JVM was launched).
-To upload files is a bit more complicated, you would need a client. Simply attach them to the request and set the proper Content-Type. An example to upload file <b>'upload.jpg'</b> would be this:
-```
+To <b>access</b> files from the working directory simply refer them in the path of the URL (e.g http://localhost/somefile.txt will try to download somefile.txt from the directory the JVM was launched).
+
+To <b>upload</b> files is a bit more complicated, you would need a client. Simply attach them to the request and set the proper Content-Type. An example to upload file <b>'upload.jpg'</b> would be this:
+```java
 	private HttpResponse submitUploadBinary() throws ClientProtocolException, IOException {
 		HttpClient httpclient = HttpClients.createDefault();
 
