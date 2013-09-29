@@ -16,7 +16,7 @@ The start command syntax is:
 
 The working directory of the server will be the directory from which it was launched. 
 
-To <b>access</b> files from the working directory simply refer them in the path of the URL (e.g http://localhost/somefile.txt will try to download somefile.txt from the directory the JVM was launched).
+To <b>access</b> files from the working directory simply refer them in the path of the URL (e.g <b>http://localhost/somefile.txt</b> will try to download <b>somefile.txt</b> from the directory the JVM was launched).
 
 To <b>upload</b> files is a bit more complicated, you would need a <a href="http://hc.apache.org/httpclient-3.x/">client</a>. Simply attach them to the request and set the proper Content-Type. An example to upload file <b>'upload.jpg'</b> would be this:
 ```java
@@ -33,17 +33,16 @@ To <b>upload</b> files is a bit more complicated, you would need a <a href="http
 	}
 ```
 							 
-The architecture of the server is simple:
+The components main of the server are these:
 
- *  Server        	    --> Will create the socket listener thread and it will delegate processing to a HttpStreamHandler
+*  Server        	    --> Will create the socket listener thread and it will delegate processing to a HttpStreamHandler
                           via a ThreadManager
- *  ThreadManager 	    --> Handles Thread pool management, increase decrease number of threads, thread saturation limits - After 
-					      how many concurrent executing jobs we can say that it's too much.
- *  HttpStreamHandler   --> Will create the HttpRequest from the HttpRequestInputStream and the HttpResponse object and it will 
+*  ThreadManager 	    --> Handles Thread pool management, increase/decrease number of threads, manage thread saturation limits ( 
+					      how many concurrent executing jobs we can have).
+*  HttpStreamHandler   --> Will create the HttpRequest from the HttpRequestInputStream and the HttpResponse object and it will 
                           delegate processing to 'handlers'
- *  HttpDownloadHandler --> HttpHandler responsible for streaming files into the HttpResponse
- *  HttpUploadHandler   --> HttpHandler responsible for writing files read from the HttpRequest content
- *  FileManager         --> read/write files, decide to keep file buffer (cache) or stream directly from disk., Manage streams and 
+*  HttpDownloadHandler --> HttpHandler responsible for streaming files into the HttpResponse
+*  HttpUploadHandler   --> HttpHandler responsible for writing files read from the HttpRequest content files
 							resources ( locking , proper stream closing, etc. )
 
 
